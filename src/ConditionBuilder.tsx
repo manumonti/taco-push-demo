@@ -1,6 +1,6 @@
-import { conditions } from '@nucypher/taco';
-import { Mumbai, useEthers } from '@usedapp/core';
-import React, { useState } from 'react';
+import { conditions } from "@nucypher/taco";
+import { Mumbai, useEthers } from "@usedapp/core";
+import React, { useState } from "react";
 
 interface Props {
   condition?: conditions.Condition | undefined;
@@ -10,10 +10,10 @@ interface Props {
 
 const rpcCondition = new conditions.RpcCondition({
   chain: Mumbai.chainId,
-  method: 'eth_getBalance',
-  parameters: [':userAddress'],
+  method: "eth_getBalance",
+  parameters: [":userAddress"],
   returnValueTest: {
-    comparator: '>',
+    comparator: ">",
     value: 0,
   },
 });
@@ -33,7 +33,7 @@ export const ConditionBuilder = ({
   }
 
   const prettyPrint = (obj: object | string) => {
-    if (typeof obj === 'string') {
+    if (typeof obj === "string") {
       obj = JSON.parse(obj);
     }
     return JSON.stringify(obj, null, 2);
@@ -41,7 +41,7 @@ export const ConditionBuilder = ({
 
   const makeInput = (
     onChange = (e: any) => console.log(e),
-    defaultValue: string,
+    defaultValue: string
   ) => (
     <textarea
       rows={15}
@@ -54,7 +54,7 @@ export const ConditionBuilder = ({
 
   const conditionJSONInput = makeInput(
     setConditionString,
-    JSON.stringify(rpcCondition.toObj()),
+    JSON.stringify(rpcCondition.toObj())
   );
 
   const onCreateCondition = (e: any) => {

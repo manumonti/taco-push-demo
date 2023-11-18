@@ -6,16 +6,17 @@ import {
   getPorterUri,
   initialize,
   ThresholdMessageKit,
-} from '@nucypher/taco';
-import { Mumbai, useEthers } from '@usedapp/core';
-import { ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
+} from "@nucypher/taco";
+import { Mumbai, Sepolia, useEthers } from "@usedapp/core";
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
+import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 
-import { ConditionBuilder } from './ConditionBuilder';
-import { Decrypt } from './Decrypt';
-import { Encrypt } from './Encrypt';
-import { Spinner } from './Spinner';
-import { DEFAULT_DOMAIN, DEFAULT_RITUAL_ID } from './config';
+import { ConditionBuilder } from "./ConditionBuilder";
+import { Decrypt } from "./Decrypt";
+import { Encrypt } from "./Encrypt";
+import { Spinner } from "./Spinner";
+import { DEFAULT_DOMAIN, DEFAULT_RITUAL_ID } from "./config";
 
 export default function App() {
   const { activateBrowserWallet, deactivate, account, switchNetwork } =
@@ -50,7 +51,7 @@ export default function App() {
       message,
       condition,
       ritualId,
-      provider.getSigner(),
+      provider.getSigner()
     );
 
     setEncryptedMessage(encryptedMessage);
@@ -62,7 +63,7 @@ export default function App() {
       return;
     }
     setLoading(true);
-    setDecryptedMessage('');
+    setDecryptedMessage("");
     setDecryptionErrors([]);
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -71,8 +72,20 @@ export default function App() {
       domain,
       encryptedMessage,
       getPorterUri(domain),
-      provider.getSigner(),
+      provider.getSigner()
     );
+
+    await switchNetwork(Sepolia.chainId);
+    const signer = provider.getSigner();
+    const pushUser = await PushAPI.initialize(signer, {
+      env: CONSTANTS.ENV.STAGING,
+    });
+    const response = await pushUser.channel.send(["*"], {
+      notification: {
+        title: "New decryption on TACo!",
+        body: "A new TACo decryption was made.",
+      },
+    });
 
     setDecryptedMessage(new TextDecoder().decode(decryptedMessage));
     setLoading(false);
@@ -99,21 +112,10 @@ export default function App() {
         {account && <p>Account: {account}</p>}
       </div>
 
-      <h2>Notice</h2>
-      <p>
-        In order to access this demo, make sure to allow-list your wallet
-        address first.
-      </p>
-      <p>
-        Connect with us on our{' '}
-        <a href={'https://discord.gg/threshold'}>Discord server</a> at{' '}
-        <b>#taco</b> channel to get your wallet address allow-listed
-      </p>
-
       <h2>Ritual ID</h2>
       <p>Replace with your own ritual ID</p>
       <input
-        type={'number'}
+        type={"number"}
         value={ritualId}
         onChange={(e) => setRitualId(parseInt(e.currentTarget.value))}
       />

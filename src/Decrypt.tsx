@@ -1,5 +1,5 @@
-import { ThresholdMessageKit } from '@nucypher/taco';
-import React, { useState } from 'react';
+import { ThresholdMessageKit } from "@nucypher/taco";
+import React, { useState } from "react";
 
 interface Props {
   enabled: boolean;
@@ -14,7 +14,7 @@ export const Decrypt = ({
   decryptionErrors,
   enabled,
 }: Props) => {
-  const [encryptedMessage, setEncryptedMessage] = useState('');
+  const [encryptedMessage, setEncryptedMessage] = useState("");
 
   if (!enabled) {
     return <></>;
@@ -24,7 +24,8 @@ export const Decrypt = ({
     if (!encryptedMessage) {
       return;
     }
-    const mkBytes = Buffer.from(encryptedMessage, 'base64');
+
+    const mkBytes = Buffer.from(encryptedMessage, "base64");
     const mk = ThresholdMessageKit.fromBytes(mkBytes);
     decrypt(mk);
   };
