@@ -1,4 +1,7 @@
-# taco-demo
+# taco-push-demo
+
+See this demo in action:
+[https://taco-push-demo.vercel.app/](https://taco-push-demo.vercel.app/)
 
 ## Installation
 
@@ -7,25 +10,26 @@ pnpm install
 pnpm start
 ```
 
-## Usage
+## Prerequisites
 
-In order to run this demo will need a MetaMask with an account funded with some
-$MATIC.
+- In order to run this demo will need a MetaMask with an account funded with some
+  $MATIC.
 
-In order to connect with the network, the demo uses a public instances of
-[Porter](https://docs.threshold.network/app-development/threshold-access-control-tac/porter).
+- Additionally, will need to create a Channel in push protocol: please, choose staging
+  environment + Polygon Mumbai testnet. Docs
+  [here](https://push.org/docs/notifications/tutorials/create-your-channel/)
 
-### Polygon
+## What you will do
 
-`@nucypher/taco` is in an early release. We recommend **not** using it in
-production _just yet_.
+This demo joins [Threshold Access Control
+(TACo 🌮)](https://docs.threshold.network/app-development/threshold-access-control-tac)
+with [Push Protocol](https://push.org/).
 
-### Tapir - Mumbai Testnet
+With this demo, you will:
 
-The current release of `@nucypher/taco` supports Ursulas working on Tapir
-network and contracts deployed on Mumbai testnet.
-
-## References
-
-This dApp is based on
-[useDapp example](https://github.com/EthWorks/useDapp/tree/master/packages/example).
+1. Create a new TACo Access Policy for your information.
+2. Encrypt a text message.
+3. Get the ciphertext.
+4. Decrypt the ciphertext, only if you comply with the onchain condition.
+5. Everytime the information is decrypted, a Push notification is sent to the encryptor
+   address.
