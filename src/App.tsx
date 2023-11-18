@@ -7,7 +7,7 @@ import {
   initialize,
   ThresholdMessageKit,
 } from "@nucypher/taco";
-import { Mumbai, Sepolia, useEthers } from "@usedapp/core";
+import { Mumbai, useEthers } from "@usedapp/core";
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
@@ -75,7 +75,6 @@ export default function App() {
       provider.getSigner()
     );
 
-    await switchNetwork(Sepolia.chainId);
     const signer = provider.getSigner();
     const pushUser = await PushAPI.initialize(signer, {
       env: CONSTANTS.ENV.STAGING,
@@ -85,6 +84,7 @@ export default function App() {
         title: "New decryption on TACo!",
         body: "A new TACo decryption was made.",
       },
+      channel: "eip155:80001:" + (await signer.getAddress()),
     });
 
     setDecryptedMessage(new TextDecoder().decode(decryptedMessage));
